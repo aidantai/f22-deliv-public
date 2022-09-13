@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useState } from 'react';
 import { categories } from '../utils/categories';
-import { addEntry } from '../utils/mutations';
+import { addEntry, updateEntry, deleteEntry } from '../utils/mutations';
 
 // Modal component for individual entries.
 
@@ -36,9 +36,19 @@ export default function EntryModal({ entry, type, user }) {
    const [description, setDescription] = useState(entry.description);
    const [category, setCategory] = React.useState(entry.category);
 
+
+
    // Modal visibility handlers
 
    const handleClickOpen = () => {
+      setOpen(true);
+      setName(entry.name);
+      setLink(entry.link);
+      setDescription(entry.description);
+      setCategory(entry.category);
+   };
+
+   const handleOpenEdit = () => {
       setOpen(true);
       setName(entry.name);
       setLink(entry.link);
@@ -53,6 +63,9 @@ export default function EntryModal({ entry, type, user }) {
    // Mutation handlers
 
    const handleAdd = () => {
+
+      // const newid = this.firestore.createId();
+
       const newEntry = {
          name: name,
          link: link,
@@ -68,14 +81,32 @@ export default function EntryModal({ entry, type, user }) {
 
    // TODO: Add Edit Mutation Handler
 
+   const handleEdit = () => {
+      const newEntry = {
+         name: name,
+         link: link,
+         description: description,
+         user: entry.user,
+         category: category,
+         userid: entry.userid,
+      }
+      updateEntry(newEntry, entry.docref).catch(console.error);
+      handleClose();
+   };
+
    // TODO: Add Delete Mutation Handler
+
+   const handleDelete = () => {
+      deleteEntry(entry.docref).catch(console.error);
+      handleClose();
+   };
 
    // Button handlers for modal opening and inside-modal actions.
    // These buttons are displayed conditionally based on if adding or editing/opening.
    // TODO: You may have to edit these buttons to implement editing/deleting functionality.
 
    const openButton =
-      type === "edit" ? <IconButton onClick={handleClickOpen}>
+      type === "edit" ? <IconButton onClick={handleOpenEdit}>
          <OpenInNewIcon />
       </IconButton>
          : type === "add" ? <Button variant="contained" onClick={handleClickOpen}>
@@ -87,12 +118,14 @@ export default function EntryModal({ entry, type, user }) {
       type === "edit" ?
          <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" onClick={handleEdit}>Edit Entry</Button>
+            <Button variant="contained" onClick={handleDelete}>Delete Entry</Button>
          </DialogActions>
          : type === "add" ?
             <DialogActions>
                <Button onClick={handleClose}>Cancel</Button>
                <Button variant="contained" onClick={handleAdd}>Add Entry</Button>
-            </DialogActions>
+            </DialogActions> 
             : null;
 
    return (

@@ -33,6 +33,7 @@ export default function EntryTable({ entries }) {
                      <TableCell component="th" scope="row">
                         {entry.name}
                      </TableCell>
+                     {/* <TableCell align="right">{entry.id}</TableCell> */}
                      <TableCell align="right"><Link href={entry.link}>{entry.link}</Link></TableCell>
                      <TableCell align="right">{entry.user}</TableCell>
                      <TableCell align="right">{getCategory(entry.category).name}</TableCell>
