@@ -97,7 +97,7 @@ export default function EntryModal({ entry, type, user }) {
    // TODO: Add Delete Mutation Handler
 
    const handleDelete = () => {
-      deleteEntry(entry.docref).catch(console.error);
+      deleteEntry(entry, entry.docref).catch(console.error);
       handleClose();
    };
 
