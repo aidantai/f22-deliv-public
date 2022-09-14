@@ -35,7 +35,6 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
    const [link, setLink] = useState(entry.link);
    const [description, setDescription] = useState(entry.description);
    const [category, setCategory] = React.useState(entry.category);
-   const [filter, setFilter] = React.useState(0);
 
 
 
@@ -112,6 +111,11 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
       handleClose();
    }
 
+   const handleReset = () => {
+      filterChanger(5);
+      handleClose();
+   }
+
    // Button handlers for modal opening and inside-modal actions.
    // These buttons are displayed conditionally based on if adding or editing/opening.
    // TODO: You may have to edit these buttons to implement editing/deleting functionality.
@@ -133,8 +137,8 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
          <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
             <Button variant="contained" onClick={handleShare}>Copy to Clipboard</Button>
-            <Button variant="contained" onClick={handleEdit}>Edit Entry</Button>
             <Button variant="contained" onClick={handleDelete}>Delete Entry</Button>
+            <Button variant="contained" onClick={handleEdit}>Edit Entry</Button>
          </DialogActions>
          : type === "add" ?
             <DialogActions>
@@ -144,6 +148,7 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
             : type === "filter" ?
                <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
+                  <Button variant="contained" onClick={handleReset}>Reset</Button>
                   <Button variant="contained" onClick={handleFilter}>Filter</Button>
                </DialogActions> 
                : null;

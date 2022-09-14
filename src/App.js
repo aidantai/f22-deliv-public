@@ -136,7 +136,7 @@ export default function App() {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <EntryTable entries={entries.filter(e => e.category === filter)} />
+            <EntryTable entries={entries.filter(e => e.category === filter || filter === 5)} />
           </Grid>
         </Grid>
       )
