@@ -24,7 +24,7 @@ type: Type of entry modal being opened.
    "edit" (for opening or editing an existing entry from table).
 user: User making query (The current logged in user). */
 
-export default function EntryModal({ entry, type, user }) {
+export default function EntryModal({ entry, type, user, filterChanger }) {
 
    // State variables for modal status
 
@@ -106,6 +106,11 @@ export default function EntryModal({ entry, type, user }) {
       navigator.clipboard.writeText(shareText);
    }
 
+   const handleFilter = () => {
+      filterChanger(2);
+      console.log("success")
+   }
+
    // Button handlers for modal opening and inside-modal actions.
    // These buttons are displayed conditionally based on if adding or editing/opening.
    // TODO: You may have to edit these buttons to implement editing/deleting functionality.
@@ -135,7 +140,12 @@ export default function EntryModal({ entry, type, user }) {
                <Button onClick={handleClose}>Cancel</Button>
                <Button variant="contained" onClick={handleAdd}>Add Entry</Button>
             </DialogActions> 
-            : null;
+            : type === "filter" ?
+               <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button variant="contained" onClick={handleFilter}>Filter</Button>
+               </DialogActions> 
+               : null;
 
    return (
       <div>
