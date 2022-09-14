@@ -35,6 +35,7 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
    const [link, setLink] = useState(entry.link);
    const [description, setDescription] = useState(entry.description);
    const [category, setCategory] = React.useState(entry.category);
+   const [filter, setFilter] = React.useState(0);
 
 
 
@@ -107,8 +108,8 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
    }
 
    const handleFilter = () => {
-      filterChanger(2);
-      console.log("success")
+      filterChanger(category);
+      handleClose();
    }
 
    // Button handlers for modal opening and inside-modal actions.
@@ -147,10 +148,25 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
                </DialogActions> 
                : null;
 
-   return (
-      <div>
-         {openButton}
-         <Dialog open={open} onClose={handleClose}>
+      const dialog = 
+         type === "filter" ?
+            <Dialog open={open} onClose={handleClose}>
+               <DialogTitle>Filter by Category</DialogTitle>
+               <FormControl fullWidth sx={{ "margin-top": 20 }}>
+                  <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                  <Select
+                     labelId="demo-simple-select-label"
+                     id="demo-simple-select"
+                     value={category}
+                     label="Category"
+                     onChange={(event) => setCategory(event.target.value)}
+                  >
+                     {categories.map((category) => (<MenuItem value={category.id}>{category.name}</MenuItem>))}
+                  </Select>
+               </FormControl>
+               {actionButtons}
+            </Dialog>
+         : <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{type === "edit" ? name : "Add Entry"}</DialogTitle>
             <DialogContent>
                {/* TODO: Feel free to change the properties of these components to implement editing functionality. The InputProps props class for these MUI components allows you to change their traditional CSS properties. */}
@@ -200,6 +216,12 @@ export default function EntryModal({ entry, type, user, filterChanger }) {
             </DialogContent>
             {actionButtons}
          </Dialog>
+      ;
+
+   return (
+      <div>
+         {openButton}
+         {dialog}
       </div>
    );
 }
