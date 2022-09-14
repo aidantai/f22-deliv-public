@@ -101,6 +101,11 @@ export default function EntryModal({ entry, type, user }) {
       handleClose();
    };
 
+   const handleShare = () => {
+      var shareText = `Check out ${entry.name} at ${entry.link}! \n${entry.description}`;
+      navigator.clipboard.writeText(shareText);
+   }
+
    // Button handlers for modal opening and inside-modal actions.
    // These buttons are displayed conditionally based on if adding or editing/opening.
    // TODO: You may have to edit these buttons to implement editing/deleting functionality.
@@ -112,12 +117,16 @@ export default function EntryModal({ entry, type, user }) {
          : type === "add" ? <Button variant="contained" onClick={handleClickOpen}>
             Add entry
          </Button>
-            : null;
+            : type === "filter" ? <Button variant="contained" onClick={handleClickOpen}>
+               Filter
+            </Button>
+               : null;
 
    const actionButtons =
       type === "edit" ?
          <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" onClick={handleShare}>Copy to Clipboard</Button>
             <Button variant="contained" onClick={handleEdit}>Edit Entry</Button>
             <Button variant="contained" onClick={handleDelete}>Delete Entry</Button>
          </DialogActions>

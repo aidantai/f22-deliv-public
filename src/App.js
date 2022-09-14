@@ -82,6 +82,7 @@ export default function App() {
 
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
   const [currentUser, setcurrentUser] = useState(null); // Local user info
+  const [filter, setFilter] = useState(0);
 
   // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
@@ -109,7 +110,7 @@ export default function App() {
   useEffect(() => {
 
     // ! Database query filters entries for current user. DO NOT CHANGE, editing this query may cause it to fail.
-    const q = currentUser?.uid ? query(collection(db, "entries"), where("userid", "==", currentUser.uid)) : collection(db, "entries");
+    const q = currentUser?.uid ? query(collection(db, "entries"), where("userid", "==", currentUser.uid), where("category", "==", filter)) : collection(db, "entries");
 
     /* NOTE: onSnapshot allows the page to update automatically whenever there is 
     an update to the database. This means you do not have to manually update
